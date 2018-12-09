@@ -6,17 +6,34 @@ import UserInput from "./UserInput";
 
 import "./styles.css";
 
+class Counter extends Component {
+  state = {
+    //unDone: this.props.todos.length;
+    unDone: 0
+    //done: 1
+  };
+
+  handleCount = length => {
+    this.setState({ unDone: length });
+  };
+
+  render() {
+    return (
+      <div>
+        <App handleCount={this.handleCount} />
+        <div> To Do Items: {this.state.unDone}</div>
+      </div>
+    );
+  }
+}
+
 class App extends Component {
   state = {
-    todos: [
-      "Practice React",
-      "Build taks list",
-      "add done button",
-      "add delete"
-    ]
+    todos: []
   };
 
   handleAddToDo = text => {
+    this.props.handleCount(this.state.todos.length + 1);
     this.setState(prevState => {
       return {
         todos: [...prevState.todos, text]
@@ -24,6 +41,7 @@ class App extends Component {
     });
   };
   handleDelete = index => {
+    this.props.handleCount(this.state.todos.length - 1);
     this.setState(prevState => {
       return {
         todos: [
@@ -45,4 +63,4 @@ class App extends Component {
 }
 
 const rootElement = document.getElementById("root");
-render(<App />, rootElement);
+render(<Counter />, rootElement);
